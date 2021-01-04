@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AdvancedClipboard.Server</name>
+    </assembly>
+    <members>
+        <member name="T:AdvancedClipboard.Server.DataBase.ClipboardContentEntity">
+            <summary>
+            A clipboard content.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.Id">
+            <summary>
+            The id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.CreationDate">
+            <summary>
+            The date this content was created.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.LastUsedDate">
+            <summary>
+            The last used date.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ContentTypeId">
+            <summary>
+            The content type id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ContentType">
+            <summary>
+            The content type.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.TextContent">
+            <summary>
+            The text content.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ImageTokenId">
+            <summary>
+            The image token id off the image content.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.UserId">
+            <summary>
+            The id off the user.
+            </summary>
+        </member>
+        <member name="T:AdvancedClipboard.Server.DataBase.ContentTypeEntity">
+            <summary>
+            A content type.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ContentTypeEntity.Id">
+            <summary>
+            The id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ContentTypeEntity.Name">
+            <summary>
+            The filename.
+            </summary>
+        </member>
+        <member name="T:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity">
+            <summary>
+            A file access token.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity.Filename">
+            <summary>
+            The filename.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity.Id">
+            <summary>
+            The id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity.Token">
+            <summary>
+            The token.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity.UserId">
+            <summary>
+            The user that uploaded the file.
+            </summary>
+        </member>
+        <member name="T:AdvancedClipboard.Server.DataBase.UserEntity">
+            <summary>
+            A user.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.UserEntity.Id">
+            <summary>
+            The id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.UserEntity.Login">
+            <summary>
+            The users login name.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.UserEntity.Password">
+            <summary>
+            The password of the user.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.UserEntity.Salt">
+            <summary>
+            The salt of the user.
+            </summary>
+        </member>
+    </members>
+</doc>
