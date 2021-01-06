@@ -1,10 +1,12 @@
 ﻿using AdvancedClipboard.Server.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
 namespace AdvancedClipboard.Server.Controllers
 {
+  [Authorize]
   [Route("[controller]")]
   [ApiController]
   public class ClipboardController : ControllerBase
@@ -14,7 +16,7 @@ namespace AdvancedClipboard.Server.Controllers
     [HttpGet]
     public IEnumerable<ClipboardGetData> Get()
     {
-      throw new Exception();
+      return new ClipboardGetData[] { };
     }
 
     #endregion Methods

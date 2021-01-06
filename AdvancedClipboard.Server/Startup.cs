@@ -1,3 +1,6 @@
+using AdvancedClipboard.Server.Helpers;
+using AdvancedClipboard.Server.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -70,12 +73,11 @@ namespace AdvancedClipboard.Server
 
       services.AddControllers();
 
-      //this.services.AddAuthentication("BasicAuthentication")
-      // .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+      this.services.AddAuthentication("BasicAuthentication")
+       .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
-      //services.AddScoped<IAuthService, AuthService>();
-      //services.AddScoped<UserDatabaseAccess>();
-      //services.AddScoped<FileRepository>();
+      services.AddScoped<IAuthService, AuthService>();
+      services.AddScoped<UserSevice>();
 
       services.AddSwaggerGen(setupAction =>
       {

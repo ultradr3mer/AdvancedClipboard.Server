@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace AdvancedClipboard.Server.DataBase
 {
-  internal class DatabaseContext : DbContext
+  public class DatabaseContext : DbContext
   {
     #region Fields
 
@@ -25,7 +25,7 @@ namespace AdvancedClipboard.Server.DataBase
     public DbSet<ClipboardContentEntity> ClipboardContent { get; set; }
     public DbSet<ContentTypeEntity> ContentType { get; set; }
     public DbSet<FileAccessTokenEntity> FileAccessToken { get; set; }
-    public DbSet<UserEntity> User { get; set; }
+    public DbSet<UserEntity> ClipboardUser { get; set; }
 
     #endregion Properties
 
