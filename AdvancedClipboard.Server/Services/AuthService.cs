@@ -14,7 +14,8 @@ namespace AdvancedClipboard.Server.Services
     #region Properties
 
     SqlConnection Connection { get; }
-    string Username { get; }
+    string Login { get; }
+    Guid UserId { get; }
 
     #endregion Properties
 
@@ -48,7 +49,8 @@ namespace AdvancedClipboard.Server.Services
     #region Properties
 
     public SqlConnection Connection { get; private set; }
-    public string Username { get; private set; }
+    public string Login { get; private set; }
+    public Guid UserId { get; private set; }
 
     #endregion Properties
 
@@ -65,6 +67,9 @@ namespace AdvancedClipboard.Server.Services
       }
 
       this.Connection = connection;
+      this.Login = login;
+      this.UserId = user.Id;
+
       return user;
     }
 

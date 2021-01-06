@@ -11,10 +11,14 @@ namespace AdvancedClipboard.Server.DataBase
     #region Properties
 
     /// <summary>
-    /// The id.
+    /// The content type.
     /// </summary>
-    [Key]
-    public Guid Id { get; set; }
+    public ContentTypeEntity ContentType { get; set; }
+
+    /// <summary>
+    /// The content type id.
+    /// </summary>
+    public Guid ContentTypeId { get; set; }
 
     /// <summary>
     /// The date this content was created.
@@ -22,29 +26,30 @@ namespace AdvancedClipboard.Server.DataBase
     public DateTime CreationDate { get; set; }
 
     /// <summary>
+    /// The id.
+    /// </summary>
+    [Key]
+    public Guid Id { get; set; }
+
+    /// <summary>
+    /// The image token off the image content.
+    /// </summary>
+    public FileAccessTokenEntity ImageToken { get; set; }
+
+    /// <summary>
+    /// The image token id off the image content.
+    /// </summary>
+    public Guid? ImageTokenId { get; set; }
+
+    /// <summary>
     /// The last used date.
     /// </summary>
     public DateTime LastUsedDate { get; set; }
 
     /// <summary>
-    /// The content type id.
-    /// </summary>
-    public short ContentTypeId { get; set; }
-
-    /// <summary>
-    /// The content type.
-    /// </summary>
-    public ContentTypeEntity ContentType { get; set; }
-
-    /// <summary>
     /// The text content.
     /// </summary>
     public string TextContent { get; set; }
-
-    /// <summary>
-    /// The image token id off the image content.
-    /// </summary>
-    public Guid ImageTokenId { get; set; }
 
     /// <summary>
     /// The id off the user.

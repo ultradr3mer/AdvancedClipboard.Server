@@ -9,19 +9,9 @@
             A clipboard content.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.Id">
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ContentType">
             <summary>
-            The id.
-            </summary>
-        </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.CreationDate">
-            <summary>
-            The date this content was created.
-            </summary>
-        </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.LastUsedDate">
-            <summary>
-            The last used date.
+            The content type.
             </summary>
         </member>
         <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ContentTypeId">
@@ -29,19 +19,34 @@
             The content type id.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ContentType">
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.CreationDate">
             <summary>
-            The content type.
+            The date this content was created.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.TextContent">
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.Id">
             <summary>
-            The text content.
+            The id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ImageToken">
+            <summary>
+            The image token off the image content.
             </summary>
         </member>
         <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ImageTokenId">
             <summary>
             The image token id off the image content.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.LastUsedDate">
+            <summary>
+            The last used date.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.TextContent">
+            <summary>
+            The text content.
             </summary>
         </member>
         <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.UserId">

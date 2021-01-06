@@ -34,23 +34,17 @@ namespace AdvancedClipboard.Server.Controllers
         Username = signupPostData.Username.Trim()
       };
 
-      var connection = await this.authService.Connect();
-      try
+      using var connection = await this.authService.Connect();
+      var context = new DatabaseContext(connection);
+      bool loginExists = await context.ClipboardUser.AnyAsync(o => o.Login == signupPostData.Username);
+      if (loginExists)
       {
-        var context = new DatabaseContext(connection);
-        bool loginExists = await context.ClipboardUser.AnyAsync(o => o.Login == signupPostData.Username);
-        if (loginExists)
-        {
-          return this.BadRequest("Username already existent.");
-        }
+        return this.BadRequest("Username already existent.");
+      }
 
-        await this.userSevice.CreateUserAsync(signupPostData, context);
-      }
-      finally
-      {
-        await connection.CloseAsync();
-        await connection.DisposeAsync();
-      }
+      await this.userSevice.CreateUserAsync(signupPostData, context);
+      await connection.CloseAsync();
+
       return this.Ok();
     }
 
