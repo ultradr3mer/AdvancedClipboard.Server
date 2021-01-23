@@ -48,6 +48,15 @@ namespace AdvancedClipboard.Server.Controllers
       return this.Ok();
     }
 
+    [HttpGet("Authorize")]
+    public async Task<IActionResult> Authorize(string username, string password)
+    {
+      await this.authService.Authenticate(username, password);
+      this.authService.Connection.Close();
+      this.authService.Connection.Dispose();
+      return this.Ok();
+    }
+
     #endregion Methods
   }
 }
