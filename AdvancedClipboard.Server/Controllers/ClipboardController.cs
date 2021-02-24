@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdvancedClipboard.Server.Controllers
 {
@@ -25,17 +26,20 @@ namespace AdvancedClipboard.Server.Controllers
     #region Methods
 
     [HttpGet]
-    public IEnumerable<ClipboardGetData> Get()
+    public async Task<IEnumerable<ClipboardGetData>> Get()
     {
       using var connection = authService.Connection;
 
       var context = new DatabaseContext(connection);
-      var result = (from cc in context.ClipboardContent
-                    select new ClipboardGetData()
-                    {
-                      Id = cc.Id,
-                      PlainTextContent = cc.TextContent
-                    }).ToList();
+      var result = await (from cc in context.ClipboardContent
+                          where cc.UserId == authService.UserId
+                          select new ClipboardGetData()
+                          {
+                            Id = cc.Id,
+                            PlainTextContent = cc.TextContent
+                          }).ToListAsync();
+
+      await connection.CloseAsync();
 
       return result;
     }
@@ -64,6 +68,14 @@ namespace AdvancedClipboard.Server.Controllers
       {
         Id = entry.Id
       };
+    }
+
+    [HttpGet("Authorize")]
+    public async Task<IActionResult> Authorize()
+    {
+      using var connection = authService.Connection;
+      await connection.CloseAsync();
+      return this.Ok();
     }
 
     #endregion Methods
