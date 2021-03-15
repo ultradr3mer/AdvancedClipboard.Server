@@ -40,7 +40,7 @@ namespace AdvancedClipboard.Server.Controllers
       var context = new DatabaseContext(connection);
       var result = await (from cc in context.ClipboardContent
                           where cc.UserId == authService.UserId
-                          select ClipboardGetData.CreateFromEntity(cc,cc.ImageToken)).ToListAsync();
+                          select ClipboardGetData.CreateFromEntity(cc, cc.ImageToken)).ToListAsync();
 
       await connection.CloseAsync();
 
@@ -48,7 +48,7 @@ namespace AdvancedClipboard.Server.Controllers
     }
 
     [HttpPost("PostPlainText")]
-    public async Task<ClipboardPostResultData> PostPlainText(ClipboardPostPlainTextData data)
+    public async Task<ClipboardGetData> PostPlainText(ClipboardPostPlainTextData data)
     {
       using var connection = authService.Connection;
 
@@ -67,10 +67,7 @@ namespace AdvancedClipboard.Server.Controllers
       await context.SaveChangesAsync();
       await connection.CloseAsync();
 
-      return new ClipboardPostResultData()
-      {
-        Id = entry.Id
-      };
+      return ClipboardGetData.CreateWithPlainTextContent(entry.Id, entry.TextContent);
     }
 
     [HttpGet("Authorize")]
