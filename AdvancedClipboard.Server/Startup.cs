@@ -1,4 +1,5 @@
 using AdvancedClipboard.Server.Helpers;
+using AdvancedClipboard.Server.Repositories;
 using AdvancedClipboard.Server.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -71,13 +72,14 @@ namespace AdvancedClipboard.Server
     {
       this.services = services;
 
-      services.AddControllers();
+      services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
 
       this.services.AddAuthentication("BasicAuthentication")
        .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
       services.AddScoped<IAuthService, AuthService>();
       services.AddScoped<UserSevice>();
+      services.AddScoped<FileRepository>();
 
       services.AddSwaggerGen(setupAction =>
       {

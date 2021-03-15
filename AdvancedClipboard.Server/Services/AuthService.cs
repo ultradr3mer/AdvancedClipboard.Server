@@ -21,7 +21,7 @@ namespace AdvancedClipboard.Server.Services
 
     #region Methods
 
-    Task<UserEntity> Authenticate(string username, string password);
+    Task<UserEntity> Authenticate(string login, string password);
     Task<SqlConnection> Connect();
 
     #endregion Methods
