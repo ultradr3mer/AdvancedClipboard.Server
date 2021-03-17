@@ -79,16 +79,15 @@ namespace AdvancedClipboard.Server.Controllers
     }
 
     [HttpPost("PostImage")]
-    public async Task<ClipboardGetData> PostImage(IFormFile file, string fileExtension)
+    public async Task<ClipboardGetData> PostImage(IFormFile file)
     {
       using SqlConnection connection = this.authService.Connection;
 
       DateTime now = DateTime.Now;
-      string filename = $"clip_{now:yyyyMMdd'_'HHmmss}" + (fileExtension ?? Path.GetExtension(file.FileName));
-      FileAccessTokenEntity token = await this.fileRepository.UploadInternal(filename,
-                                                                             file.OpenReadStream(),
-                                                                             connection,
-                                                                             false);
+      FileAccessTokenEntity token = await this.fileRepository.UploadInternal($"clip_{now:yyyyMMdd'_'HHmmss}" + Path.GetExtension(file.FileName),
+                                                           file.OpenReadStream(),
+                                                           connection,
+                                                           false);
 
       var entry = new ClipboardContentEntity()
       {
