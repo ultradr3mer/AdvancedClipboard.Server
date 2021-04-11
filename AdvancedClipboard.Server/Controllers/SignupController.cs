@@ -4,7 +4,6 @@ using AdvancedClipboard.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading.Tasks;
 
 namespace AdvancedClipboard.Server.Controllers
@@ -14,14 +13,22 @@ namespace AdvancedClipboard.Server.Controllers
   [ApiController]
   public class SignupController : ControllerBase
   {
+    #region Fields
+
     private readonly IAuthService authService;
     private readonly UserSevice userSevice;
+
+    #endregion Fields
+
+    #region Constructors
 
     public SignupController(IAuthService authService, UserSevice userSevice)
     {
       this.authService = authService;
       this.userSevice = userSevice;
     }
+
+    #endregion Constructors
 
     #region Methods
 

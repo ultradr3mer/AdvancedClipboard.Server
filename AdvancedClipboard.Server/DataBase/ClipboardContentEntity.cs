@@ -34,12 +34,12 @@ namespace AdvancedClipboard.Server.Database
     /// <summary>
     /// The image token off the image content.
     /// </summary>
-    public FileAccessTokenEntity ImageToken { get; set; }
+    public FileAccessTokenEntity FileToken { get; set; }
 
     /// <summary>
-    /// The image token id off the image content.
+    /// The token id off the file content.
     /// </summary>
-    public Guid? ImageTokenId { get; set; }
+    public Guid? FileTokenId { get; set; }
 
     /// <summary>
     /// The last used date.

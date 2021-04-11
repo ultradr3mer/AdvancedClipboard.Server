@@ -4,6 +4,25 @@
         <name>AdvancedClipboard.Server</name>
     </assembly>
     <members>
+        <member name="T:AdvancedClipboard.Server.Controllers.FileController">
+            <summary>
+            The <see cref="T:AdvancedClipboard.Server.Controllers.FileController"/> provides functionality to upload and download files.
+            </summary>
+        </member>
+        <member name="M:AdvancedClipboard.Server.Controllers.FileController.#ctor(AdvancedClipboard.Server.Repositories.FileRepository)">
+            <summary>
+            Creates a new instance of the <see cref="T:AdvancedClipboard.Server.Controllers.FileController"/> class.
+            </summary>
+            <param name="fileRepository">The file repository.</param>
+        </member>
+        <member name="M:AdvancedClipboard.Server.Controllers.FileController.Get(System.String,System.String)">
+            <summary>
+            Gets an image.
+            </summary>
+            <param name="token">The access token of the image to get.</param>
+            <param name="filename">The filename of the image to get.</param>
+            <returns>The detailed post information.</returns>
+        </member>
         <member name="T:AdvancedClipboard.Server.Database.ClipboardContentEntity">
             <summary>
             A clipboard content.
@@ -29,14 +48,14 @@
             The id.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.ImageToken">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.FileToken">
             <summary>
             The image token off the image content.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.ImageTokenId">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.FileTokenId">
             <summary>
-            The image token id off the image content.
+            The token id off the file content.
             </summary>
         </member>
         <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.LastUsedDate">
@@ -124,21 +143,36 @@
             The salt of the user.
             </summary>
         </member>
-        <member name="T:AdvancedClipboard.Server.Data.FileUploadResultData">
+        <member name="T:AdvancedClipboard.Server.Properties.Resources">
             <summary>
-            The result data of uploading a file.
+              A strongly-typed resource class, for looking up localized strings, etc.
             </summary>
         </member>
-        <member name="M:AdvancedClipboard.Server.Data.FileUploadResultData.#ctor(AdvancedClipboard.Server.Database.FileAccessTokenEntity)">
+        <member name="P:AdvancedClipboard.Server.Properties.Resources.ResourceManager">
             <summary>
-            Creates a new instance of the <see cref="T:AdvancedClipboard.Server.Data.FileUploadResultData"/> class based on the given <see cref="T:AdvancedClipboard.Server.Database.FileAccessTokenEntity"/>.
+              Returns the cached ResourceManager instance used by this class.
             </summary>
-            <param name="entity">The <see cref="T:AdvancedClipboard.Server.Database.FileAccessTokenEntity"/> to copy properties from.</param>
         </member>
-        <member name="P:AdvancedClipboard.Server.Data.FileUploadResultData.LocalUrl">
+        <member name="P:AdvancedClipboard.Server.Properties.Resources.Culture">
             <summary>
-            The local url to retrive the file.
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
             </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Properties.Resources.MimeTypes">
+             <summary>
+               Looks up a localized string similar to .aac,AAC audio,audio/aac
+            .abw,AbiWord document,application/x-abiword
+            .arc,Archive document (multiple files embedded),application/x-freearc
+            .avi,AVI: Audio Video Interleave,video/x-msvideo
+            .azw,Amazon Kindle eBook format,application/vnd.amazon.ebook
+            .bin,Any kind of binary data,application/octet-stream
+            .bmp,Windows OS/2 Bitmap Graphics,image/bmp
+            .bz,BZip archive,application/x-bzip
+            .bz2,BZip2 archive,application/x-bzip2
+            .csh,C-Shell script,application/x-csh
+            .css,Cascading Style Sheets (CSS),text/css [rest of string was truncated]&quot;;.
+             </summary>
         </member>
         <member name="T:AdvancedClipboard.Server.Repositories.FileRepository">
             <summary>
@@ -184,26 +218,6 @@
             <param name="connection">The sql connection.</param>
             <param name="overwrite">True, if an existing file should be overwriten.</param>
             <returns>The token data of the uploaded file.</returns>
-        </member>
-        <member name="T:handshake.Controllers.FileController">
-            <summary>
-            The <see cref="T:handshake.Controllers.FileController"/> provides functionality to upload and download files.
-            </summary>
-        </member>
-        <member name="M:handshake.Controllers.FileController.#ctor(AdvancedClipboard.Server.Services.IAuthService,AdvancedClipboard.Server.Repositories.FileRepository)">
-            <summary>
-            Creates a new instance of the <see cref="T:handshake.Controllers.FileController"/> class.
-            </summary>
-            <param name="userService">The user / login service.</param>
-            <param name="fileRepository">The file repository.</param>
-        </member>
-        <member name="M:handshake.Controllers.FileController.Get(System.String,System.String)">
-            <summary>
-            Gets an image.
-            </summary>
-            <param name="token">The access token of the image to get.</param>
-            <param name="filename">The filename of the image to get.</param>
-            <returns>The detailed post information.</returns>
         </member>
         <member name="T:handshake.Data.FileTokenData">
             <summary>

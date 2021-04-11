@@ -19,22 +19,22 @@ namespace AdvancedClipboard.Server.Data
     #region Properties
 
     public Guid ContentTypeId { get; private set; }
+    public string FileContentUrl { get; private set; }
     public Guid Id { get; }
-    public string ImageContentUrl { get; private set; }
     public string TextContent { get; private set; }
 
     #endregion Properties
 
     #region Methods
 
-    public static ClipboardGetData CreateWithImageContent(Guid id, string imageUrl)
+    public static ClipboardGetData CreateWithFileContent(Guid id, FileAccessTokenEntity fileToken)
     {
-      return new ClipboardGetData(id) { ImageContentUrl = imageUrl, ContentTypeId = Constants.ContentTypes.Image, };
+      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), ContentTypeId = Constants.ContentTypes.File, };
     }
 
-    public static ClipboardGetData CreateWithImageContent(Guid id, FileAccessTokenEntity imageToken)
+    public static ClipboardGetData CreateWithImageContent(Guid id, FileAccessTokenEntity fileToken)
     {
-      return CreateWithImageContent(id, FileTokenData.CreateUrl(imageToken));
+      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), ContentTypeId = Constants.ContentTypes.Image, };
     }
 
     public static ClipboardGetData CreateWithPlainTextContent(Guid id, string text)
@@ -42,17 +42,21 @@ namespace AdvancedClipboard.Server.Data
       return new ClipboardGetData(id) { TextContent = text, ContentTypeId = Constants.ContentTypes.PlainText, };
     }
 
-    internal static ClipboardGetData CreateFromEntity(ClipboardContentEntity cc, FileAccessTokenEntity imageToken)
+    internal static ClipboardGetData CreateFromEntity(ClipboardContentEntity cc, FileAccessTokenEntity fileToken)
     {
       var contentType = cc.ContentType?.Id ?? cc.ContentTypeId;
 
       if (contentType == ContentTypes.Image)
       {
-        return CreateWithImageContent(cc.Id, imageToken);
+        return CreateWithImageContent(cc.Id, fileToken);
       }
       else if (contentType == ContentTypes.PlainText)
       {
         return CreateWithPlainTextContent(cc.Id, cc.TextContent);
+      }
+      else if (contentType == ContentTypes.File)
+      {
+        return CreateWithImageContent(cc.Id, fileToken);
       }
 
       throw new Exception("Unexpected Content Type");

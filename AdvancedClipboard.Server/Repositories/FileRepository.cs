@@ -23,6 +23,7 @@ namespace AdvancedClipboard.Server.Repositories
     private const string UserContainerPrefix = "user-";
 
     private readonly IConfiguration configuration;
+    private readonly Dictionary<string, string> mimeExtensions = new Dictionary<string, string>();
     private readonly IAuthService userService;
 
     #endregion Fields
@@ -38,6 +39,8 @@ namespace AdvancedClipboard.Server.Repositories
     {
       this.configuration = configuration;
       this.userService = userService;
+
+      this.InitializeMimeTypes(Properties.Resources.MimeTypes);
     }
 
     #endregion Constructors
@@ -71,25 +74,7 @@ namespace AdvancedClipboard.Server.Repositories
     /// <returns>The content type.</returns>
     public string GetContentTypeForExtension(string extension)
     {
-      switch (extension.ToLower())
-      {
-        case ".gif":
-          return "image/gif";
-
-        case ".png":
-          return "image/png";
-
-        case ".jpeg":
-        case ".jpg":
-        case ".jpe":
-          return "image/jpeg";
-
-        case ".zip":
-          return "application/zip";
-
-        default:
-          throw new Exception("Invalid file extension.");
-      }
+      return this.mimeExtensions[extension];
     }
 
     /// <summary>
@@ -127,7 +112,7 @@ namespace AdvancedClipboard.Server.Repositories
     /// <returns>The token data of the uploaded file.</returns>
     public async Task<FileAccessTokenEntity> UploadInternal(string filename, Stream content, SqlConnection connection, bool overwrite)
     {
-      this.GetContentTypeForExtension(Path.GetExtension(filename));
+      GetContentTypeForExtension(Path.GetExtension(filename));
 
       FileAccessTokenEntity tokenEntity = await this.CreateTokenIfNotExists(filename, connection);
       BlobContainerClient azureContainer = await this.GetAzureContainer(this.userService.Login);
@@ -169,6 +154,32 @@ namespace AdvancedClipboard.Server.Repositories
       await client.CreateIfNotExistsAsync();
 
       return client;
+    }
+
+    private void InitializeMimeTypes(string mimeTypes)
+    {
+      string[] lines = mimeTypes.Split(System.Environment.NewLine);
+
+      foreach (string line in lines)
+      {
+        if (string.IsNullOrEmpty(line))
+        {
+          continue;
+        }
+
+        string[] lineparts = line.Split(',');
+
+        string mime = lineparts[0];
+        string extension = lineparts[1];
+        string extensionAlt = lineparts[2];
+
+        this.mimeExtensions.Add(extension, mime);
+
+        if (!string.IsNullOrEmpty(extensionAlt))
+        {
+          this.mimeExtensions.Add(extensionAlt, mime);
+        }
+      }
     }
 
     private async Task<FileAccessTokenEntity> TryUpdateToken(DatabaseContext context, Guid userId, string fileName)

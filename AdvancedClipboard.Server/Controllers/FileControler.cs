@@ -8,7 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace handshake.Controllers
+namespace AdvancedClipboard.Server.Controllers
 {
   /// <summary>
   /// The <see cref="FileController"/> provides functionality to upload and download files.
@@ -21,7 +21,6 @@ namespace handshake.Controllers
     #region Fields
 
     private readonly FileRepository fileRepository;
-    private readonly IAuthService userService;
 
     #endregion Fields
 
@@ -30,11 +29,9 @@ namespace handshake.Controllers
     /// <summary>
     /// Creates a new instance of the <see cref="FileController"/> class.
     /// </summary>
-    /// <param name="userService">The user / login service.</param>
     /// <param name="fileRepository">The file repository.</param>
-    public FileController(IAuthService userService, FileRepository fileRepository)
+    public FileController(FileRepository fileRepository)
     {
-      this.userService = userService;
       this.fileRepository = fileRepository;
     }
 

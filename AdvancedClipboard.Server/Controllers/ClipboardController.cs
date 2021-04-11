@@ -41,7 +41,7 @@ namespace AdvancedClipboard.Server.Controllers
       var result = await (from cc in context.ClipboardContent
                           where cc.UserId == authService.UserId
                           && cc.IsArchived == false
-                          select ClipboardGetData.CreateFromEntity(cc, cc.ImageToken)).ToListAsync();
+                          select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToListAsync();
 
       await connection.CloseAsync();
 
@@ -97,27 +97,25 @@ namespace AdvancedClipboard.Server.Controllers
     [HttpPost("PostFile")]
     public async Task<ClipboardGetData> PostFile(IFormFile file, string fileExtension)
     {
-      return await this.PostImage(file, fileExtension);
-    }
-
-    [HttpPost("PostImage")]
-    public async Task<ClipboardGetData> PostImage(IFormFile file, string fileExtension)
-    {
       using SqlConnection connection = this.authService.Connection;
 
       DateTime now = DateTime.Now;
-      string filename = $"clip_{now:yyyyMMdd'_'HHmmss}" + (fileExtension ?? Path.GetExtension(file.FileName));
+      string extension = (fileExtension ?? Path.GetExtension(file.FileName));
+      string filename = $"clip_{now:yyyyMMdd'_'HHmmss}" + extension;
       FileAccessTokenEntity token = await this.fileRepository.UploadInternal(filename,
                                                                              file.OpenReadStream(),
                                                                              connection,
                                                                              false);
 
+      var contentType = this.fileRepository.GetContentTypeForExtension(extension).StartsWith("image") ? Constants.ContentTypes.Image :
+                                                                                                   Constants.ContentTypes.File;
+
       var entry = new ClipboardContentEntity()
       {
-        ContentTypeId = Constants.ContentTypes.Image,
+        ContentTypeId = contentType,
         CreationDate = now,
         LastUsedDate = now,
-        ImageTokenId = token.Id,
+        FileTokenId = token.Id,
         UserId = authService.UserId
       };
 
