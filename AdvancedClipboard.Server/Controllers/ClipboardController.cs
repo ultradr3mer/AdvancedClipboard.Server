@@ -94,6 +94,12 @@ namespace AdvancedClipboard.Server.Controllers
       return this.Ok();
     }
 
+    [HttpPost("PostFile")]
+    public async Task<ClipboardGetData> PostFile(IFormFile file, string fileExtension)
+    {
+      return await this.PostImage(file, fileExtension);
+    }
+
     [HttpPost("PostImage")]
     public async Task<ClipboardGetData> PostImage(IFormFile file, string fileExtension)
     {

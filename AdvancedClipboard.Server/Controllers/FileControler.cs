@@ -1,12 +1,9 @@
-﻿using AdvancedClipboard.Server.Data;
-using AdvancedClipboard.Server.Repositories;
+﻿using AdvancedClipboard.Server.Repositories;
 using AdvancedClipboard.Server.Services;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
@@ -70,6 +67,5 @@ namespace handshake.Controllers
     }
 
     #endregion Methods
-
   }
 }
