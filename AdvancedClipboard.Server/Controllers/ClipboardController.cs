@@ -1,5 +1,5 @@
 ﻿using AdvancedClipboard.Server.Data;
-using AdvancedClipboard.Server.DataBase;
+using AdvancedClipboard.Server.Database;
 using AdvancedClipboard.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,11 +40,27 @@ namespace AdvancedClipboard.Server.Controllers
       var context = new DatabaseContext(connection);
       var result = await (from cc in context.ClipboardContent
                           where cc.UserId == authService.UserId
+                          && cc.IsArchived == false
                           select ClipboardGetData.CreateFromEntity(cc, cc.ImageToken)).ToListAsync();
 
       await connection.CloseAsync();
 
       return result;
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteAsync(Guid Id)
+    {
+      using var connection = authService.Connection;
+
+      var context = new DatabaseContext(connection);
+      var cc = await context.ClipboardContent.FindAsync(Id);
+      cc.IsArchived = true;
+      await context.SaveChangesAsync();
+
+      await connection.CloseAsync();
+
+      return this.Ok();
     }
 
     [HttpPost("PostPlainText")]

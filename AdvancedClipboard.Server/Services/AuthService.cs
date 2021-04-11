@@ -1,4 +1,4 @@
-﻿using AdvancedClipboard.Server.DataBase;
+﻿using AdvancedClipboard.Server.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;

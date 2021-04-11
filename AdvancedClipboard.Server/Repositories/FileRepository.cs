@@ -1,4 +1,4 @@
-﻿using AdvancedClipboard.Server.DataBase;
+﻿using AdvancedClipboard.Server.Database;
 using AdvancedClipboard.Server.Services;
 using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore;

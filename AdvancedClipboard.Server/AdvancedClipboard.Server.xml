@@ -4,117 +4,122 @@
         <name>AdvancedClipboard.Server</name>
     </assembly>
     <members>
-        <member name="T:AdvancedClipboard.Server.DataBase.ClipboardContentEntity">
+        <member name="T:AdvancedClipboard.Server.Database.ClipboardContentEntity">
             <summary>
             A clipboard content.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ContentType">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.ContentType">
             <summary>
             The content type.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ContentTypeId">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.ContentTypeId">
             <summary>
             The content type id.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.CreationDate">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.CreationDate">
             <summary>
             The date this content was created.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.Id">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.Id">
             <summary>
             The id.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ImageToken">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.ImageToken">
             <summary>
             The image token off the image content.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.ImageTokenId">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.ImageTokenId">
             <summary>
             The image token id off the image content.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.LastUsedDate">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.LastUsedDate">
             <summary>
             The last used date.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.TextContent">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.TextContent">
             <summary>
             The text content.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ClipboardContentEntity.UserId">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.UserId">
             <summary>
             The id off the user.
             </summary>
         </member>
-        <member name="T:AdvancedClipboard.Server.DataBase.ContentTypeEntity">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.IsArchived">
+            <summary>
+            If this content is archived.
+            </summary>
+        </member>
+        <member name="T:AdvancedClipboard.Server.Database.ContentTypeEntity">
             <summary>
             A content type.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ContentTypeEntity.Id">
+        <member name="P:AdvancedClipboard.Server.Database.ContentTypeEntity.Id">
             <summary>
             The id.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.ContentTypeEntity.Name">
+        <member name="P:AdvancedClipboard.Server.Database.ContentTypeEntity.Name">
             <summary>
             The filename.
             </summary>
         </member>
-        <member name="T:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity">
+        <member name="T:AdvancedClipboard.Server.Database.FileAccessTokenEntity">
             <summary>
             A file access token.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity.Filename">
+        <member name="P:AdvancedClipboard.Server.Database.FileAccessTokenEntity.Filename">
             <summary>
             The filename.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity.Id">
+        <member name="P:AdvancedClipboard.Server.Database.FileAccessTokenEntity.Id">
             <summary>
             The id.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity.Token">
+        <member name="P:AdvancedClipboard.Server.Database.FileAccessTokenEntity.Token">
             <summary>
             The token.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity.UserId">
+        <member name="P:AdvancedClipboard.Server.Database.FileAccessTokenEntity.UserId">
             <summary>
             The user that uploaded the file.
             </summary>
         </member>
-        <member name="T:AdvancedClipboard.Server.DataBase.UserEntity">
+        <member name="T:AdvancedClipboard.Server.Database.UserEntity">
             <summary>
             A user.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.UserEntity.Id">
+        <member name="P:AdvancedClipboard.Server.Database.UserEntity.Id">
             <summary>
             The id.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.UserEntity.Login">
+        <member name="P:AdvancedClipboard.Server.Database.UserEntity.Login">
             <summary>
             The users login name.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.UserEntity.Password">
+        <member name="P:AdvancedClipboard.Server.Database.UserEntity.Password">
             <summary>
             The password of the user.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.DataBase.UserEntity.Salt">
+        <member name="P:AdvancedClipboard.Server.Database.UserEntity.Salt">
             <summary>
             The salt of the user.
             </summary>
@@ -124,11 +129,11 @@
             The result data of uploading a file.
             </summary>
         </member>
-        <member name="M:AdvancedClipboard.Server.Data.FileUploadResultData.#ctor(AdvancedClipboard.Server.DataBase.FileAccessTokenEntity)">
+        <member name="M:AdvancedClipboard.Server.Data.FileUploadResultData.#ctor(AdvancedClipboard.Server.Database.FileAccessTokenEntity)">
             <summary>
-            Creates a new instance of the <see cref="T:AdvancedClipboard.Server.Data.FileUploadResultData"/> class based on the given <see cref="T:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity"/>.
+            Creates a new instance of the <see cref="T:AdvancedClipboard.Server.Data.FileUploadResultData"/> class based on the given <see cref="T:AdvancedClipboard.Server.Database.FileAccessTokenEntity"/>.
             </summary>
-            <param name="entity">The <see cref="T:AdvancedClipboard.Server.DataBase.FileAccessTokenEntity"/> to copy properties from.</param>
+            <param name="entity">The <see cref="T:AdvancedClipboard.Server.Database.FileAccessTokenEntity"/> to copy properties from.</param>
         </member>
         <member name="P:AdvancedClipboard.Server.Data.FileUploadResultData.LocalUrl">
             <summary>
@@ -210,7 +215,7 @@
             Create a new instance of the <see cref="T:handshake.Data.FileTokenData"/> class.
             </summary>
         </member>
-        <member name="M:handshake.Data.FileTokenData.#ctor(AdvancedClipboard.Server.DataBase.FileAccessTokenEntity)">
+        <member name="M:handshake.Data.FileTokenData.#ctor(AdvancedClipboard.Server.Database.FileAccessTokenEntity)">
             <summary>
             Create a new instance of the <see cref="T:handshake.Data.FileTokenData"/> class from the given entity.
             </summary>
@@ -237,7 +242,7 @@
             </summary>
             <returns>The local url.</returns>
         </member>
-        <member name="M:handshake.Data.FileTokenData.CreateUrl(AdvancedClipboard.Server.DataBase.FileAccessTokenEntity)">
+        <member name="M:handshake.Data.FileTokenData.CreateUrl(AdvancedClipboard.Server.Database.FileAccessTokenEntity)">
             <summary>
             Generates the url.
             </summary>

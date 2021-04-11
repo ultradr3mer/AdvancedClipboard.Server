@@ -1,5 +1,5 @@
 ﻿using AdvancedClipboard.Server.Data;
-using AdvancedClipboard.Server.DataBase;
+using AdvancedClipboard.Server.Database;
 using AdvancedClipboard.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

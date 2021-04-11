@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 
-namespace AdvancedClipboard.Server.DataBase
+namespace AdvancedClipboard.Server.Database
 {
   public class DatabaseContext : DbContext
   {

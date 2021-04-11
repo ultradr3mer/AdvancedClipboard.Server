@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdvancedClipboard.Server.DataBase
+namespace AdvancedClipboard.Server.Database
 {
   /// <summary>
   /// A clipboard content.
@@ -55,6 +55,11 @@ namespace AdvancedClipboard.Server.DataBase
     /// The id off the user.
     /// </summary>
     public Guid UserId { get; set; }
+
+    /// <summary>
+    /// If this content is archived.
+    /// </summary>
+    public bool IsArchived { get; set; }
 
     #endregion Properties
   }

@@ -1,4 +1,4 @@
-﻿using AdvancedClipboard.Server.DataBase;
+﻿using AdvancedClipboard.Server.Database;
 using System;
 
 namespace handshake.Data
