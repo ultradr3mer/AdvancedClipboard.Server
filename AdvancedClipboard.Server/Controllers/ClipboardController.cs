@@ -126,7 +126,8 @@ namespace AdvancedClipboard.Server.Controllers
 
       connection.Close();
 
-      return ClipboardGetData.CreateWithImageContent(entry.Id, token);
+      return contentType == Constants.ContentTypes.Image ? ClipboardGetData.CreateWithImageContent(entry.Id, token) : 
+                                                           ClipboardGetData.CreateWithFileContent(entry.Id, token);
     }
 
 

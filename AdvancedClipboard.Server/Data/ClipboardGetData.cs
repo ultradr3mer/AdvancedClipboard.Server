@@ -56,7 +56,7 @@ namespace AdvancedClipboard.Server.Data
       }
       else if (contentType == ContentTypes.File)
       {
-        return CreateWithImageContent(cc.Id, fileToken);
+        return CreateWithFileContent(cc.Id, fileToken);
       }
 
       throw new Exception("Unexpected Content Type");
