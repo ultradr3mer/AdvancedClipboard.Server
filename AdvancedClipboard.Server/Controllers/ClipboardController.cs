@@ -1,18 +1,17 @@
 ﻿using AdvancedClipboard.Server.Data;
 using AdvancedClipboard.Server.Database;
+using AdvancedClipboard.Server.Repositories;
 using AdvancedClipboard.Server.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
-using AdvancedClipboard.Server.Repositories;
 using System.IO;
-using handshake.Data;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AdvancedClipboard.Server.Controllers
 {
@@ -21,8 +20,14 @@ namespace AdvancedClipboard.Server.Controllers
   [ApiController]
   public class ClipboardController : ControllerBase
   {
+    #region Fields
+
     private readonly IAuthService authService;
     private readonly FileRepository fileRepository;
+
+    #endregion Fields
+
+    #region Constructors
 
     public ClipboardController(IAuthService authService, FileRepository fileRepository)
     {
@@ -30,7 +35,32 @@ namespace AdvancedClipboard.Server.Controllers
       this.fileRepository = fileRepository;
     }
 
+    #endregion Constructors
+
     #region Methods
+
+    [HttpGet("Authorize")]
+    public async Task<IActionResult> Authorize()
+    {
+      using var connection = authService.Connection;
+      await connection.CloseAsync();
+      return this.Ok();
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteAsync(Guid Id)
+    {
+      using var connection = authService.Connection;
+
+      var context = new DatabaseContext(connection);
+      var cc = await context.ClipboardContent.FindAsync(Id);
+      cc.IsArchived = true;
+      await context.SaveChangesAsync();
+
+      await connection.CloseAsync();
+
+      return this.Ok();
+    }
 
     [HttpGet]
     public async Task<IEnumerable<ClipboardGetData>> Get()
@@ -48,19 +78,16 @@ namespace AdvancedClipboard.Server.Controllers
       return result;
     }
 
-    [HttpDelete]
-    public async Task<ActionResult> DeleteAsync(Guid Id)
+    [HttpPost("PostFile")]
+    public async Task<ClipboardGetData> PostFile(IFormFile file, string fileExtension)
     {
-      using var connection = authService.Connection;
+      return await this.PostFileInternal(file, fileExtension, null);
+    }
 
-      var context = new DatabaseContext(connection);
-      var cc = await context.ClipboardContent.FindAsync(Id);
-      cc.IsArchived = true;
-      await context.SaveChangesAsync();
-
-      await connection.CloseAsync();
-
-      return this.Ok();
+    [HttpPost("PostNamedFile")]
+    public async Task<ClipboardGetData> PostNamedFile(IFormFile file, string fileName)
+    {
+      return await this.PostFileInternal(file, null, fileName);
     }
 
     [HttpPost("PostPlainText")]
@@ -86,21 +113,12 @@ namespace AdvancedClipboard.Server.Controllers
       return ClipboardGetData.CreateWithPlainTextContent(entry.Id, entry.TextContent);
     }
 
-    [HttpGet("Authorize")]
-    public async Task<IActionResult> Authorize()
-    {
-      using var connection = authService.Connection;
-      await connection.CloseAsync();
-      return this.Ok();
-    }
-
-    [HttpPost("PostFile")]
-    public async Task<ClipboardGetData> PostFile(IFormFile file, string fileExtension)
+    private async Task<ClipboardGetData> PostFileInternal(IFormFile file, string fileExtension, string fileName)
     {
       using SqlConnection connection = this.authService.Connection;
 
       DateTime now = DateTime.Now;
-      string extension = (fileExtension ?? Path.GetExtension(file.FileName));
+      string extension = (fileExtension ?? Path.GetExtension(fileName) ?? Path.GetExtension(file.FileName));
       string filename = $"clip_{now:yyyyMMdd'_'HHmmss}" + extension;
       FileAccessTokenEntity token = await this.fileRepository.UploadInternal(filename,
                                                                              file.OpenReadStream(),
@@ -116,7 +134,8 @@ namespace AdvancedClipboard.Server.Controllers
         CreationDate = now,
         LastUsedDate = now,
         FileTokenId = token.Id,
-        UserId = authService.UserId
+        UserId = authService.UserId,
+        DisplayFileName = fileName
       };
 
       using var context = new DatabaseContext(connection);
@@ -126,10 +145,9 @@ namespace AdvancedClipboard.Server.Controllers
 
       connection.Close();
 
-      return contentType == Constants.ContentTypes.Image ? ClipboardGetData.CreateWithImageContent(entry.Id, token) : 
-                                                           ClipboardGetData.CreateWithFileContent(entry.Id, token);
+      return contentType == Constants.ContentTypes.Image ? ClipboardGetData.CreateWithImageContent(entry.Id, token, fileName) :
+                                                           ClipboardGetData.CreateWithFileContent(entry.Id, token, fileName);
     }
-
 
     #endregion Methods
   }

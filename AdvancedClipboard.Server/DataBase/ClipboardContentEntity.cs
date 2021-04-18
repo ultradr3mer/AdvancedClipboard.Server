@@ -61,6 +61,11 @@ namespace AdvancedClipboard.Server.Database
     /// </summary>
     public bool IsArchived { get; set; }
 
+    /// <summary>
+    /// Filename to display.
+    /// </summary>
+    public string DisplayFileName { get; set; }
+
     #endregion Properties
   }
 }

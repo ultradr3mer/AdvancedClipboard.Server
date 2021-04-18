@@ -22,19 +22,20 @@ namespace AdvancedClipboard.Server.Data
     public string FileContentUrl { get; private set; }
     public Guid Id { get; }
     public string TextContent { get; private set; }
+    public string FileName { get; private set; }
 
     #endregion Properties
 
     #region Methods
 
-    public static ClipboardGetData CreateWithFileContent(Guid id, FileAccessTokenEntity fileToken)
+    public static ClipboardGetData CreateWithFileContent(Guid id, FileAccessTokenEntity fileToken, string fileName)
     {
-      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), ContentTypeId = Constants.ContentTypes.File, };
+      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), ContentTypeId = Constants.ContentTypes.File, FileName = fileName };
     }
 
-    public static ClipboardGetData CreateWithImageContent(Guid id, FileAccessTokenEntity fileToken)
+    public static ClipboardGetData CreateWithImageContent(Guid id, FileAccessTokenEntity fileToken, string fileName)
     {
-      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), ContentTypeId = Constants.ContentTypes.Image, };
+      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), ContentTypeId = Constants.ContentTypes.Image, FileName = fileName  };
     }
 
     public static ClipboardGetData CreateWithPlainTextContent(Guid id, string text)
@@ -48,7 +49,7 @@ namespace AdvancedClipboard.Server.Data
 
       if (contentType == ContentTypes.Image)
       {
-        return CreateWithImageContent(cc.Id, fileToken);
+        return CreateWithImageContent(cc.Id, fileToken, cc.DisplayFileName);
       }
       else if (contentType == ContentTypes.PlainText)
       {
@@ -56,7 +57,7 @@ namespace AdvancedClipboard.Server.Data
       }
       else if (contentType == ContentTypes.File)
       {
-        return CreateWithFileContent(cc.Id, fileToken);
+        return CreateWithFileContent(cc.Id, fileToken, cc.DisplayFileName);
       }
 
       throw new Exception("Unexpected Content Type");
