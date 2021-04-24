@@ -83,6 +83,16 @@
             Filename to display.
             </summary>
         </member>
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.LaneId">
+            <summary>
+            The Lane Id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.Lane">
+            <summary>
+            The Lane.
+            </summary>
+        </member>
         <member name="T:AdvancedClipboard.Server.Database.ContentTypeEntity">
             <summary>
             A content type.
@@ -121,6 +131,36 @@
         <member name="P:AdvancedClipboard.Server.Database.FileAccessTokenEntity.UserId">
             <summary>
             The user that uploaded the file.
+            </summary>
+        </member>
+        <member name="T:AdvancedClipboard.Server.Database.LaneEntity">
+            <summary>
+            A clipboard lane.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.LaneEntity.Color">
+            <summary>
+            The color.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.LaneEntity.Id">
+            <summary>
+            The id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.LaneEntity.Name">
+            <summary>
+            The name.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.LaneEntity.User">
+            <summary>
+            The owner.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.LaneEntity.UserId">
+            <summary>
+            The owners id.
             </summary>
         </member>
         <member name="T:AdvancedClipboard.Server.Database.UserEntity">

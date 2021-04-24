@@ -26,6 +26,7 @@ namespace AdvancedClipboard.Server.Database
     public DbSet<ContentTypeEntity> ContentType { get; set; }
     public DbSet<FileAccessTokenEntity> FileAccessToken { get; set; }
     public DbSet<UserEntity> ClipboardUser { get; set; }
+    public DbSet<LaneEntity> Lane { get; set; }
 
     #endregion Properties
 

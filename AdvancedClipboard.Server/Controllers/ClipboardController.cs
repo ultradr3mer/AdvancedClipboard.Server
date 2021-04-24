@@ -110,7 +110,7 @@ namespace AdvancedClipboard.Server.Controllers
       await context.SaveChangesAsync();
       await connection.CloseAsync();
 
-      return ClipboardGetData.CreateWithPlainTextContent(entry.Id, entry.TextContent);
+      return ClipboardGetData.CreateWithPlainTextContent(entry.Id, entry.LaneId, entry.TextContent);
     }
 
     private async Task<ClipboardGetData> PostFileInternal(IFormFile file, string fileExtension, string fileName)
@@ -145,8 +145,8 @@ namespace AdvancedClipboard.Server.Controllers
 
       connection.Close();
 
-      return contentType == Constants.ContentTypes.Image ? ClipboardGetData.CreateWithImageContent(entry.Id, token, fileName) :
-                                                           ClipboardGetData.CreateWithFileContent(entry.Id, token, fileName);
+      return contentType == Constants.ContentTypes.Image ? ClipboardGetData.CreateWithImageContent(entry.Id, entry.LaneId, token, fileName) :
+                                                           ClipboardGetData.CreateWithFileContent(entry.Id, entry.LaneId, token, fileName);
     }
 
     #endregion Methods

@@ -23,24 +23,25 @@ namespace AdvancedClipboard.Server.Data
     public Guid Id { get; }
     public string TextContent { get; private set; }
     public string FileName { get; private set; }
+    public Guid? LaneId { get; set; }
 
     #endregion Properties
 
     #region Methods
 
-    public static ClipboardGetData CreateWithFileContent(Guid id, FileAccessTokenEntity fileToken, string fileName)
+    public static ClipboardGetData CreateWithFileContent(Guid id, Guid? laneId, FileAccessTokenEntity fileToken, string fileName)
     {
-      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), ContentTypeId = Constants.ContentTypes.File, FileName = fileName };
+      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), LaneId = laneId, ContentTypeId = Constants.ContentTypes.File, FileName = fileName };
     }
 
-    public static ClipboardGetData CreateWithImageContent(Guid id, FileAccessTokenEntity fileToken, string fileName)
+    public static ClipboardGetData CreateWithImageContent(Guid id, Guid? laneId, FileAccessTokenEntity fileToken, string fileName)
     {
-      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), ContentTypeId = Constants.ContentTypes.Image, FileName = fileName  };
+      return new ClipboardGetData(id) { FileContentUrl = FileTokenData.CreateUrl(fileToken), LaneId = laneId, ContentTypeId = Constants.ContentTypes.Image, FileName = fileName  };
     }
 
-    public static ClipboardGetData CreateWithPlainTextContent(Guid id, string text)
+    public static ClipboardGetData CreateWithPlainTextContent(Guid id, Guid? laneId, string text)
     {
-      return new ClipboardGetData(id) { TextContent = text, ContentTypeId = Constants.ContentTypes.PlainText, };
+      return new ClipboardGetData(id) { TextContent = text, LaneId = laneId, ContentTypeId = Constants.ContentTypes.PlainText, };
     }
 
     internal static ClipboardGetData CreateFromEntity(ClipboardContentEntity cc, FileAccessTokenEntity fileToken)
@@ -49,15 +50,15 @@ namespace AdvancedClipboard.Server.Data
 
       if (contentType == ContentTypes.Image)
       {
-        return CreateWithImageContent(cc.Id, fileToken, cc.DisplayFileName);
+        return CreateWithImageContent(cc.Id, cc.LaneId, fileToken, cc.DisplayFileName);
       }
       else if (contentType == ContentTypes.PlainText)
       {
-        return CreateWithPlainTextContent(cc.Id, cc.TextContent);
+        return CreateWithPlainTextContent(cc.Id, cc.LaneId, cc.TextContent);
       }
       else if (contentType == ContentTypes.File)
       {
-        return CreateWithFileContent(cc.Id, fileToken, cc.DisplayFileName);
+        return CreateWithFileContent(cc.Id, cc.LaneId, fileToken, cc.DisplayFileName);
       }
 
       throw new Exception("Unexpected Content Type");
