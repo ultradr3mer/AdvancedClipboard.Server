@@ -55,8 +55,13 @@ namespace AdvancedClipboard.Server.Controllers
       var context = new DatabaseContext(connection);
       var cc = await context.ClipboardContent.FindAsync(Id);
       cc.IsArchived = true;
-      await context.SaveChangesAsync();
 
+      if (cc.UserId != authService.UserId)
+      {
+        return this.BadRequest();
+      }
+
+      await context.SaveChangesAsync();
       await connection.CloseAsync();
 
       return this.Ok();
@@ -76,6 +81,29 @@ namespace AdvancedClipboard.Server.Controllers
       await connection.CloseAsync();
 
       return result;
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Put(ClipboardPutData data)
+    {
+      using var connection = authService.Connection;
+
+      var context = new DatabaseContext(connection);
+      var cc = await context.ClipboardContent.FindAsync(data.Id);
+
+      if (cc.UserId != authService.UserId)
+      {
+        return this.BadRequest();
+      }
+
+      cc.DisplayFileName = data.FileName;
+      cc.TextContent = data.TextContent;
+      cc.LaneId = data.LaneId;
+
+      await context.SaveChangesAsync();
+      await connection.CloseAsync();
+
+      return this.Ok();
     }
 
     [HttpGet("GetLane")]
