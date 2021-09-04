@@ -78,6 +78,23 @@ namespace AdvancedClipboard.Server.Controllers
       return result;
     }
 
+    [HttpGet("GetLane")]
+    public async Task<IEnumerable<ClipboardGetData>> GetLane(Guid lane)
+    {
+      using var connection = authService.Connection;
+
+      var context = new DatabaseContext(connection);
+      var result = await (from cc in context.ClipboardContent
+                          where cc.UserId == authService.UserId
+                          && cc.IsArchived == false
+                          && cc.LaneId == lane
+                          select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToListAsync();
+
+      await connection.CloseAsync();
+
+      return result;
+    }
+
     [HttpPost("PostFile")]
     public async Task<ClipboardGetData> PostFile(IFormFile file, string fileExtension)
     {

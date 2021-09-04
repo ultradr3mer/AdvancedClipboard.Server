@@ -19,19 +19,19 @@ namespace AdvancedClipboard.Server.Database
     /// <summary>
     /// The users login name.
     /// </summary>
-    [MaxLength(100)]
+    [MaxLength(50)]
     public string Login { get; set; }
 
     /// <summary>
     /// The password of the user.
     /// </summary>
-    [MaxLength(33)]
+    [MaxLength(32)]
     public string Password { get; set; }
 
     /// <summary>
     /// The salt of the user.
     /// </summary>
-    [MaxLength(33)]
+    [MaxLength(32)]
     public string Salt { get; set; }
 
     #endregion Properties

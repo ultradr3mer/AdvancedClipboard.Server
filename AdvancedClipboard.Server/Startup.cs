@@ -17,12 +17,6 @@ namespace AdvancedClipboard.Server
 {
   public class Startup
   {
-    #region Fields
-
-    private IServiceCollection services;
-
-    #endregion Fields
-
     #region Constructors
 
     public Startup(IConfiguration configuration)
@@ -43,7 +37,10 @@ namespace AdvancedClipboard.Server
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      app.UseDeveloperExceptionPage();
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
 
       app.UseHttpsRedirection();
 
@@ -70,11 +67,9 @@ namespace AdvancedClipboard.Server
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      this.services = services;
-
       services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
 
-      this.services.AddAuthentication("BasicAuthentication")
+      services.AddAuthentication("BasicAuthentication")
        .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
       services.AddScoped<IAuthService, AuthService>();

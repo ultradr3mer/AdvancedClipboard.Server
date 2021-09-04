@@ -43,9 +43,9 @@
             The date this content was created.
             </summary>
         </member>
-        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.Id">
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.DisplayFileName">
             <summary>
-            The id.
+            Filename to display.
             </summary>
         </member>
         <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.FileToken">
@@ -56,6 +56,26 @@
         <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.FileTokenId">
             <summary>
             The token id off the file content.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.Id">
+            <summary>
+            The id.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.IsArchived">
+            <summary>
+            If this content is archived.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.Lane">
+            <summary>
+            The Lane.
+            </summary>
+        </member>
+        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.LaneId">
+            <summary>
+            The Lane Id.
             </summary>
         </member>
         <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.LastUsedDate">
@@ -71,26 +91,6 @@
         <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.UserId">
             <summary>
             The id off the user.
-            </summary>
-        </member>
-        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.IsArchived">
-            <summary>
-            If this content is archived.
-            </summary>
-        </member>
-        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.DisplayFileName">
-            <summary>
-            Filename to display.
-            </summary>
-        </member>
-        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.LaneId">
-            <summary>
-            The Lane Id.
-            </summary>
-        </member>
-        <member name="P:AdvancedClipboard.Server.Database.ClipboardContentEntity.Lane">
-            <summary>
-            The Lane.
             </summary>
         </member>
         <member name="T:AdvancedClipboard.Server.Database.ContentTypeEntity">
