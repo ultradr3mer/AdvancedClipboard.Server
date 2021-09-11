@@ -2,7 +2,7 @@
 
 namespace AdvancedClipboard.Server.Data
 {
-  public class LaneGetData
+  public class LanePutData
   {
     #region Properties
 
