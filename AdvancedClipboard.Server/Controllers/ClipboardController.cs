@@ -68,7 +68,7 @@ namespace AdvancedClipboard.Server.Controllers
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ClipboardGetData>> Get()
+    public async Task<IEnumerable<ClipboardGetData>> Get(Guid? id = null)
     {
       using var connection = authService.Connection;
 
@@ -76,6 +76,7 @@ namespace AdvancedClipboard.Server.Controllers
       var result = await (from cc in context.ClipboardContent
                           where cc.UserId == authService.UserId
                           && cc.IsArchived == false
+                          && (cc.Id == id || id == null)
                           select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToListAsync();
 
       await connection.CloseAsync();
