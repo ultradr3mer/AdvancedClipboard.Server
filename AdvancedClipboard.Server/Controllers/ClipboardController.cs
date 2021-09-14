@@ -94,7 +94,10 @@ namespace AdvancedClipboard.Server.Controllers
       var result = await (from cc in context.ClipboardContent
                           where cc.UserId == authService.UserId
                           && cc.IsArchived == false
-                          select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToPagedListAsync(page,32);
+                          select cc)
+                          .OrderByDescending(o=>o.CreationDate)
+                          .Select(cc => ClipboardGetData.CreateFromEntity(cc, cc.FileToken))
+                          .ToPagedListAsync(page,32);
 
       await connection.CloseAsync();
 
@@ -139,7 +142,10 @@ namespace AdvancedClipboard.Server.Controllers
                           where cc.UserId == authService.UserId
                           && cc.IsArchived == false
                           && cc.LaneId == lane
-                          select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToPagedListAsync(page, 32);
+                          select cc)
+                          .OrderByDescending(o => o.CreationDate)
+                          .Select(cc => ClipboardGetData.CreateFromEntity(cc, cc.FileToken))
+                          .ToPagedListAsync(page, 32);
 
       await connection.CloseAsync();
 
