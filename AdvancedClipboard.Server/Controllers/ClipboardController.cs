@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace AdvancedClipboard.Server.Controllers
 {
@@ -76,12 +77,33 @@ namespace AdvancedClipboard.Server.Controllers
       var result = await (from cc in context.ClipboardContent
                           where cc.UserId == authService.UserId
                           && cc.IsArchived == false
-                          && (cc.Id == id || id == null)
+                          && cc.Id == id
                           select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToListAsync();
 
       await connection.CloseAsync();
 
       return result;
+    }
+
+    [HttpGet("GetPage")]
+    public async Task<ClipboardPageGetData> GetPage(int page)
+    {
+      using var connection = authService.Connection;
+
+      var context = new DatabaseContext(connection);
+      var result = await (from cc in context.ClipboardContent
+                          where cc.UserId == authService.UserId
+                          && cc.IsArchived == false
+                          select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToPagedListAsync(page,32);
+
+      await connection.CloseAsync();
+
+      return new ClipboardPageGetData()
+      {
+        PageContent = result.ToList(),
+        PageNumber = result.PageNumber,
+        PagesCount = result.PageCount
+      };
     }
 
     [HttpPut]
@@ -107,8 +129,8 @@ namespace AdvancedClipboard.Server.Controllers
       return this.Ok();
     }
 
-    [HttpGet("GetLane")]
-    public async Task<IEnumerable<ClipboardGetData>> GetLane(Guid lane)
+    [HttpGet("GetLanePage")]
+    public async Task<ClipboardPageGetData> GetLanePage(Guid lane, int page)
     {
       using var connection = authService.Connection;
 
@@ -117,11 +139,16 @@ namespace AdvancedClipboard.Server.Controllers
                           where cc.UserId == authService.UserId
                           && cc.IsArchived == false
                           && cc.LaneId == lane
-                          select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToListAsync();
+                          select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToPagedListAsync(page, 32);
 
       await connection.CloseAsync();
 
-      return result;
+      return new ClipboardPageGetData()
+      {
+        PageContent = result.ToList(),
+        PageNumber = result.PageNumber,
+        PagesCount = result.PageCount
+      };
     }
 
     [HttpPost("PostFile")]
