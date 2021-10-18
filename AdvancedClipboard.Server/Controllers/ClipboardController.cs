@@ -42,7 +42,7 @@ namespace AdvancedClipboard.Server.Controllers
     [HttpGet("Authorize")]
     public async Task<IActionResult> Authorize()
     {
-      using var connection = authService.Connection;
+      using SqlConnection connection = this.authService.Connection;
       await connection.CloseAsync();
       return this.Ok();
     }
@@ -50,13 +50,13 @@ namespace AdvancedClipboard.Server.Controllers
     [HttpDelete]
     public async Task<ActionResult> DeleteAsync(Guid Id)
     {
-      using var connection = authService.Connection;
+      using SqlConnection connection = this.authService.Connection;
 
-      var context = new DatabaseContext(connection);
-      var cc = await context.ClipboardContent.FindAsync(Id);
+      DatabaseContext context = new DatabaseContext(connection);
+      ClipboardContentEntity cc = await context.ClipboardContent.FindAsync(Id);
       cc.IsArchived = true;
 
-      if (cc.UserId != authService.UserId)
+      if (cc.UserId != this.authService.UserId)
       {
         return this.BadRequest();
       }
@@ -68,6 +68,7 @@ namespace AdvancedClipboard.Server.Controllers
     }
 
     [HttpGet]
+    [Obsolete("Get is deprecated, please use GetWithContext instead."]
     public async Task<IEnumerable<ClipboardGetData>> Get(Guid? id = null)
     {
       using var connection = authService.Connection;
@@ -84,30 +85,8 @@ namespace AdvancedClipboard.Server.Controllers
       return result;
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Put(ClipboardPutData data)
-    {
-      using var connection = authService.Connection;
-
-      var context = new DatabaseContext(connection);
-      var cc = await context.ClipboardContent.FindAsync(data.Id);
-
-      if (cc.UserId != authService.UserId)
-      {
-        return this.BadRequest();
-      }
-
-      cc.DisplayFileName = data.FileName;
-      cc.TextContent = data.TextContent;
-      cc.LaneId = data.LaneId;
-
-      await context.SaveChangesAsync();
-      await connection.CloseAsync();
-
-      return this.Ok();
-    }
-
-    [HttpGet("GetLane")]
+    [HttpGet(nameof(GetLane))]
+    [Obsolete("GetLane is deprecated, please use GetLaneWithContext instead."]
     public async Task<IEnumerable<ClipboardGetData>> GetLane(Guid lane)
     {
       using var connection = authService.Connection;
@@ -118,6 +97,60 @@ namespace AdvancedClipboard.Server.Controllers
                           && cc.IsArchived == false
                           && cc.LaneId == lane
                           select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToListAsync();
+
+      await connection.CloseAsync();
+
+      return result;
+    }
+
+    [HttpGet(nameof(GetLaneWithContext))]
+    public async Task<ClipboardContainerGetData> GetLaneWithContext(Guid lane)
+    {
+      if (lane == Guid.Empty)
+      {
+        throw new ArgumentNullException(nameof(lane));
+      }
+      using SqlConnection connection = this.authService.Connection;
+
+      DatabaseContext context = new DatabaseContext(connection);
+      List<ClipboardGetData> entries = await (from cc in context.ClipboardContent
+                                              where cc.UserId == this.authService.UserId
+                                              && cc.IsArchived == false
+                                              && cc.LaneId == lane
+                                              select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToListAsync();
+
+      List<LaneGetData> lanes = await LaneController.GetLanesForUser(context, this.authService.UserId);
+
+      ClipboardContainerGetData result = new ClipboardContainerGetData()
+      {
+        Entries = entries,
+        Lanes = lanes
+      };
+
+      await connection.CloseAsync();
+
+      return result;
+    }
+
+    [HttpGet(nameof(GetWithContext))]
+    public async Task<ClipboardContainerGetData> GetWithContext(Guid? id = null)
+    {
+      using SqlConnection connection = this.authService.Connection;
+
+      DatabaseContext context = new DatabaseContext(connection);
+      List<ClipboardGetData> entries = await (from cc in context.ClipboardContent
+                                              where cc.UserId == this.authService.UserId
+                                              && cc.IsArchived == false
+                                              && (cc.Id == id || id == null)
+                                              select ClipboardGetData.CreateFromEntity(cc, cc.FileToken)).ToListAsync();
+
+      List<LaneGetData> lanes = await LaneController.GetLanesForUser(context, this.authService.UserId);
+
+      ClipboardContainerGetData result = new ClipboardContainerGetData()
+      {
+        Entries = entries,
+        Lanes = lanes
+      };
 
       await connection.CloseAsync();
 
@@ -139,24 +172,47 @@ namespace AdvancedClipboard.Server.Controllers
     [HttpPost("PostPlainText")]
     public async Task<ClipboardGetData> PostPlainText(ClipboardPostPlainTextData data)
     {
-      using var connection = authService.Connection;
+      using SqlConnection connection = this.authService.Connection;
 
       DateTime now = DateTime.Now;
-      var entry = new ClipboardContentEntity()
+      ClipboardContentEntity entry = new ClipboardContentEntity()
       {
         ContentTypeId = Constants.ContentTypes.PlainText,
         CreationDate = now,
         LastUsedDate = now,
         TextContent = data.Content,
-        UserId = authService.UserId
+        UserId = this.authService.UserId
       };
 
-      var context = new DatabaseContext(connection);
+      DatabaseContext context = new DatabaseContext(connection);
       await context.AddAsync(entry);
       await context.SaveChangesAsync();
       await connection.CloseAsync();
 
       return ClipboardGetData.CreateWithPlainTextContent(entry.Id, entry.LaneId, entry.TextContent);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Put(ClipboardPutData data)
+    {
+      using SqlConnection connection = this.authService.Connection;
+
+      DatabaseContext context = new DatabaseContext(connection);
+      ClipboardContentEntity cc = await context.ClipboardContent.FindAsync(data.Id);
+
+      if (cc.UserId != this.authService.UserId)
+      {
+        return this.BadRequest();
+      }
+
+      cc.DisplayFileName = data.FileName;
+      cc.TextContent = data.TextContent;
+      cc.LaneId = data.LaneId;
+
+      await context.SaveChangesAsync();
+      await connection.CloseAsync();
+
+      return this.Ok();
     }
 
     private async Task<ClipboardGetData> PostFileInternal(IFormFile file, string fileExtension, string fileName)
@@ -171,20 +227,20 @@ namespace AdvancedClipboard.Server.Controllers
                                                                              connection,
                                                                              false);
 
-      var contentType = this.fileRepository.GetContentTypeForExtension(extension).StartsWith("image") ? Constants.ContentTypes.Image :
+      Guid contentType = this.fileRepository.GetContentTypeForExtension(extension).StartsWith("image") ? Constants.ContentTypes.Image :
                                                                                                    Constants.ContentTypes.File;
 
-      var entry = new ClipboardContentEntity()
+      ClipboardContentEntity entry = new ClipboardContentEntity()
       {
         ContentTypeId = contentType,
         CreationDate = now,
         LastUsedDate = now,
         FileTokenId = token.Id,
-        UserId = authService.UserId,
+        UserId = this.authService.UserId,
         DisplayFileName = fileName
       };
 
-      using var context = new DatabaseContext(connection);
+      using DatabaseContext context = new DatabaseContext(connection);
       await context.AddAsync(entry);
       await context.SaveChangesAsync();
       await connection.CloseAsync();

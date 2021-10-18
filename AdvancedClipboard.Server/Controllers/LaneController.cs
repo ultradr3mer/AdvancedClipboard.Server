@@ -33,6 +33,13 @@ namespace AdvancedClipboard.Server.Controllers
 
     #region Methods
 
+    public static async Task<List<LaneGetData>> GetLanesForUser(DatabaseContext context, Guid userId)
+    {
+      return await (from lane in context.Lane
+                    where lane.UserId == userId
+                    select CreateGetDataFromEntity(lane)).ToListAsync();
+    }
+
     [HttpPut("AssignContent")]
     public async Task<ActionResult> AssignContent(AssignContentToLanePutData data)
     {
@@ -75,37 +82,13 @@ namespace AdvancedClipboard.Server.Controllers
       return this.Ok();
     }
 
-    [HttpPut]
-    public async Task<ActionResult> Put(LanePutData data)
-    {
-      using System.Data.SqlClient.SqlConnection connection = this.authService.Connection;
-
-      DatabaseContext context = new DatabaseContext(connection);
-      LaneEntity lane = await context.Lane.FindAsync(data.Id);
-
-      if (lane.UserId != this.authService.UserId)
-      {
-        throw new Exception("Content belongs to another user");
-      }
-
-      lane.Name = data.Name;
-      lane.Color = data.Color;
-
-      await context.SaveChangesAsync();
-      await connection.CloseAsync();
-
-      return this.Ok();
-    }
-
     [HttpGet]
     public async Task<IEnumerable<LaneGetData>> Get()
     {
       using System.Data.SqlClient.SqlConnection connection = this.authService.Connection;
 
       DatabaseContext context = new DatabaseContext(connection);
-      List<LaneGetData> result = await (from lane in context.Lane
-                                        where lane.UserId == this.authService.UserId
-                                        select CreateGetDataFromEntity(lane)).ToListAsync();
+      List<LaneGetData> result = await GetLanesForUser(context, this.authService.UserId);
 
       await connection.CloseAsync();
 
@@ -130,6 +113,28 @@ namespace AdvancedClipboard.Server.Controllers
       await connection.CloseAsync();
 
       return CreateGetDataFromEntity(entity);
+    }
+
+    [HttpPut]
+    public async Task<ActionResult> Put(LanePutData data)
+    {
+      using System.Data.SqlClient.SqlConnection connection = this.authService.Connection;
+
+      DatabaseContext context = new DatabaseContext(connection);
+      LaneEntity lane = await context.Lane.FindAsync(data.Id);
+
+      if (lane.UserId != this.authService.UserId)
+      {
+        throw new Exception("Content belongs to another user");
+      }
+
+      lane.Name = data.Name;
+      lane.Color = data.Color;
+
+      await context.SaveChangesAsync();
+      await connection.CloseAsync();
+
+      return this.Ok();
     }
 
     private static LaneGetData CreateGetDataFromEntity(LaneEntity lane)
