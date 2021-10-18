@@ -68,7 +68,7 @@ namespace AdvancedClipboard.Server.Controllers
     }
 
     [HttpGet]
-    [Obsolete("Get is deprecated, please use GetWithContext instead."]
+    [Obsolete("Get is deprecated, please use GetWithContext instead.")]
     public async Task<IEnumerable<ClipboardGetData>> Get(Guid? id = null)
     {
       using var connection = authService.Connection;
@@ -86,7 +86,7 @@ namespace AdvancedClipboard.Server.Controllers
     }
 
     [HttpGet(nameof(GetLane))]
-    [Obsolete("GetLane is deprecated, please use GetLaneWithContext instead."]
+    [Obsolete("GetLane is deprecated, please use GetLaneWithContext instead.")]
     public async Task<IEnumerable<ClipboardGetData>> GetLane(Guid lane)
     {
       using var connection = authService.Connection;
