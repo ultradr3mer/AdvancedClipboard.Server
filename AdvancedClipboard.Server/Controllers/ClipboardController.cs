@@ -158,15 +158,15 @@ namespace AdvancedClipboard.Server.Controllers
     }
 
     [HttpPost("PostFile")]
-    public async Task<ClipboardGetData> PostFile(IFormFile file, string fileExtension)
+    public async Task<ClipboardGetData> PostFile(IFormFile file, string fileExtension, Guid? laneId = null)
     {
-      return await this.PostFileInternal(file, fileExtension, null);
+      return await this.PostFileInternal(file, fileExtension, null, laneId);
     }
 
     [HttpPost("PostNamedFile")]
-    public async Task<ClipboardGetData> PostNamedFile(IFormFile file, string fileName)
+    public async Task<ClipboardGetData> PostNamedFile(IFormFile file, string fileName, Guid? laneId = null)
     {
-      return await this.PostFileInternal(file, null, fileName);
+      return await this.PostFileInternal(file, null, fileName, laneId);
     }
 
     [HttpPost("PostPlainText")]
@@ -181,7 +181,8 @@ namespace AdvancedClipboard.Server.Controllers
         CreationDate = now,
         LastUsedDate = now,
         TextContent = data.Content,
-        UserId = this.authService.UserId
+        UserId = this.authService.UserId,
+        LaneId = data.LaneGuid
       };
 
       DatabaseContext context = new DatabaseContext(connection);
@@ -215,7 +216,7 @@ namespace AdvancedClipboard.Server.Controllers
       return this.Ok();
     }
 
-    private async Task<ClipboardGetData> PostFileInternal(IFormFile file, string fileExtension, string fileName)
+    private async Task<ClipboardGetData> PostFileInternal(IFormFile file, string fileExtension, string fileName, Guid? laneId)
     {
       using SqlConnection connection = this.authService.Connection;
 
@@ -237,7 +238,8 @@ namespace AdvancedClipboard.Server.Controllers
         LastUsedDate = now,
         FileTokenId = token.Id,
         UserId = this.authService.UserId,
-        DisplayFileName = fileName
+        DisplayFileName = fileName,
+        LaneId = laneId
       };
 
       using DatabaseContext context = new DatabaseContext(connection);
