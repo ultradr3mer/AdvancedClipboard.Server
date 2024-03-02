@@ -32,4 +32,4 @@ jobs:
         app-name: 'advancedclipboard'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_97fc99cf3aa543a2a7f40d80bb5b6f9d }}
-        package: ${{env.DOTNET_ROOT}}/myapp 
+        package: ${{env.DOTNET_ROOT}}/myapp  
